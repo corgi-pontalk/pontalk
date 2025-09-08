@@ -7,6 +7,7 @@ date: 2025-09-08
 status: "publish"
 ---
 
+# title: "How to Automatically Sort Emails with Python"
 ## Introduction
 
 Is your inbox overflowing with unread messages? Manually sorting emails into folders can be time-consuming and stressful. With a small Python script, you can automate this process and let your computer do the boring work. In this article, we’ll build a simple script that labels Gmail messages automatically.
