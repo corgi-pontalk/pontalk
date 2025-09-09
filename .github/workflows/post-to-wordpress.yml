@@ -1,67 +1,37 @@
-name: Publish Markdown to WordPress
+name: Post to WordPress
 
 on:
   push:
     paths:
       - 'articles/**'
-  workflow_dispatch:
+  workflow_dispatch:  # 手動実行も可能に
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install requests markdown
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests markdown
 
-      - name: Publish Markdown to WordPress
+      - name: Post articles to WordPress
         env:
+          WP_URL: ${{ secrets.WP_URL }}
           WP_USER: ${{ secrets.WP_USER }}
           WP_PASS: ${{ secrets.WP_PASS }}
-          WP_URL: ${{ secrets.WP_URL }}
         run: |
-          python3 << 'EOF'
-          import os
-          import requests
-          import markdown
-          from pathlib import Path
-
-          WP_USER = os.environ['WP_USER']
-          WP_PASS = os.environ['WP_PASS']
-          WP_URL = os.environ['WP_URL']
-
-          # JWTトークン取得
-          token_res = requests.post(
-              WP_URL.replace('/wp/v2/posts', '/jwt-auth/v1/token'),
-              json={"username": WP_USER, "password": WP_PASS}
-          )
-          token_res.raise_for_status()
-          token = token_res.json()['token']
-
-          # Markdownを投稿
-          articles_dir = Path('articles')
-          for md_file in articles_dir.glob('*.md'):
-              with md_file.open('r', encoding='utf-8') as f:
-                  md_content = f.read()
-              html_content = markdown.markdown(md_content)
-              post_data = {
-                  "title": md_file.stem,
-                  "content": html_content,
-                  "status": "publish"
-              }
-              headers = {"Authorization": f"Bearer {token}"}
-              res = requests.post(WP_URL, headers=headers, json=post_data)
-              if res.status_code == 201:
-                  print(f"✅ {md_file.name} published: {res.json().get('link')}")
-              else:
-                  print(f"❌ Failed to publish {md_file.name}: {res.status_code}, {res.text}")
-          EOF
+          for file in articles/*.md; do
+            echo "📤 Posting $file ..."
+            python scripts/post_to_wordpress.py "$file"
+          done
 
