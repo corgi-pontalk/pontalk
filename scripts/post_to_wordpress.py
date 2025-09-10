@@ -1,3 +1,4 @@
+import sys
 import os
 import requests
 import markdown
@@ -79,5 +80,5 @@ def post_to_wordpress(file_path):
     print("✅ 投稿完了:", r.json()["link"])
 
 if __name__ == "__main__":
-    post_to_wordpress("articles/2025-09-09-email-auto-sort.md")
+    post_to_wordpress(sys.argv[1])
 
