@@ -1,6 +1,6 @@
 # Organizing Files Automatically with Python
 
-Categories: Automation, Productivity  
+Categories: Automation, Productivity
 Tags: files, organization, os, automation
 
 Are you tired of your "Downloads" folder being a complete mess?  
