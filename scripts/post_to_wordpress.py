@@ -3,15 +3,18 @@ import requests
 import markdown
 import re
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 
-load_dotenv()
+# load_dotenv()
 
 # 環境変数から読み込み (GitHub Secrets など)
-WP_URL = os.getenv('WP_URL')  # 例: https://asukacode.com
-WP_USER = os.getenv('WP_USER')
-WP_PASS = os.getenv('WP_PASS')
+# WP_URL = os.getenv('WP_URL')  # 例: https://asukacode.com
+# WP_USER = os.getenv('WP_USER')
+# WP_PASS = os.getenv('WP_PASS')
+WP_URL = os.environ['WP_URL']  # 例: https://asukacode.com
+WP_USER = os.environ['WP_USER']
+WP_PASS = os.environ['WP_PASS']
 
 def get_jwt_token():
     url = f"{WP_URL}/wp-json/jwt-auth/v1/token"
