@@ -24,13 +24,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests markdown
 
+      - name: Get changed files
+        id: files
+        uses: tj-actions/changed-files@v45
+        with:
+          files: articles/*.md
+
       - name: Post articles to WordPress
         env:
           WP_URL: ${{ secrets.WP_URL }}
           WP_USER: ${{ secrets.WP_USER }}
           WP_PASS: ${{ secrets.WP_PASS }}
         run: |
-          for file in articles/*.md; do
+          for file in ${{ steps.files.outputs.all_changed_files }}; do
             echo "📤 Posting $file ..."
             python scripts/post_to_wordpress.py "$file"
           done
