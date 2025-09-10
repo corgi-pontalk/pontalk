@@ -4,7 +4,7 @@ Categories: Automation, Productivity
 Tags: files, organization, os, automation
 
 Are you tired of your "Downloads" folder being a complete mess?
-With just a few lines of Python, you can automatically sort files into folders based on their type.  
+With just a few lines of Python, you can automatically sort files into folders based on their type.
 This is a perfect small project for everyday productivity.
 
 ## Step 1: Import Required Modules
