@@ -41,26 +41,28 @@ def parse_markdown(file_path):
     title_match = re.search(r'^# (.+)', text, re.MULTILINE)
     categories_match = re.search(r'Categories: (.+)', text)
     tags_match = re.search(r'Tags: (.+)', text)
-    excerpt_match = re.search(r'^## Excerpt (.+)', text)
 
     title = title_match.group(1) if title_match else "No title"
     categories = [c.strip().lower() for c in categories_match.group(1).split(",")] if categories_match else []
     tags = [t.strip().lower() for t in tags_match.group(1).split(",")] if tags_match else []
-    excerpt = excerpt_match.group(1) if excerpt_match else ""
 
     # 本文を HTML に変換
     content_md = re.sub(r'^# .+\n', '', text, count=1).strip()
     lines = content_md.split('\n')
     content_ = ""
+    excerpt = ""
+    excerpt_flag = 0
     for line_ in lines:
         if "^Categories: " in line_:
             continue
         elif "^Tags: " in line_:
             continue
-        elif "## Excerpt " in line_:
-            break
-        else:
+        elif "## Excerpt" in line_:
+            flag = 1
+        elif flag == 0:
             content_ += line_ + "\n"
+        else:
+            excerpt += line_ + "\n"
 
     configs = {
         'codehilite':{
