@@ -41,10 +41,12 @@ def parse_markdown(file_path):
     title_match = re.search(r'^# (.+)', text, re.MULTILINE)
     categories_match = re.search(r'Categories: (.+)', text)
     tags_match = re.search(r'Tags: (.+)', text)
+    excerpt_match = re.search(r'^## Excerpt (.+)', text)
 
     title = title_match.group(1) if title_match else "No title"
     categories = [c.strip().lower() for c in categories_match.group(1).split(",")] if categories_match else []
     tags = [t.strip().lower() for t in tags_match.group(1).split(",")] if tags_match else []
+    excerpt = excerpt_match.group(1) if excerpt_match else ""
 
     # 本文を HTML に変換
     content_md = re.sub(r'^# .+\n', '', text, count=1).strip()
@@ -59,7 +61,7 @@ def parse_markdown(file_path):
         extension_configs=configs
     )
 
-    return title, categories, tags, content_html
+    return title, categories, tags, excerpt, content_html
 
 def post_to_wordpress(file_path):
     token = get_jwt_token()
@@ -69,7 +71,7 @@ def post_to_wordpress(file_path):
     category_map = fetch_terms("categories")
     tag_map = fetch_terms("tags")
 
-    title, categories, tags, content_html = parse_markdown(file_path)
+    title, categories, tags, excerpt, content_html = parse_markdown(file_path)
 
     # 名前から ID に変換（なければ None を無視）
     category_ids = [category_map.get(c) for c in categories if c in category_map]
@@ -80,6 +82,7 @@ def post_to_wordpress(file_path):
         "status": "publish",
         "content": content_html,
         "categories": category_ids,
+        "excerpt": excerpt,
         "tags": tag_ids
     }
 
