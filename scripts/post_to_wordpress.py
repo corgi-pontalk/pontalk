@@ -58,8 +58,8 @@ def parse_markdown(file_path):
         elif "^Tags: " in line_:
             continue
         elif "## Excerpt" in line_:
-            flag = 1
-        elif flag == 0:
+            excerpt_flag = 1
+        elif excerpt_flag == 0:
             content_ += line_ + "\n"
         else:
             excerpt += line_ + "\n"
