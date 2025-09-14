@@ -53,9 +53,9 @@ def parse_markdown(file_path):
     excerpt = ""
     excerpt_flag = 0
     for line_ in lines:
-        if "^Categories: " in line_:
+        if line_.startswith("Categories: "):
             continue
-        elif "^Tags: " in line_:
+        elif line_.startswith("Tags: "):
             continue
         elif "## Excerpt" in line_:
             excerpt_flag = 1
