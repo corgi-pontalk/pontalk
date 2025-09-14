@@ -48,7 +48,16 @@ def parse_markdown(file_path):
 
     # 本文を HTML に変換
     content_md = re.sub(r'^# .+\n', '', text, count=1).strip()
-    content_html = markdown.markdown(content_md)
+    configs = {
+        'codehilite':{
+            'noclasses': True
+        }
+    }
+    content_html = markdown.markdown(
+        content_md,
+        extensions=['fenced_code', 'codehilite'],
+        extension_configs=configs
+    )
 
     return title, categories, tags, content_html
 
