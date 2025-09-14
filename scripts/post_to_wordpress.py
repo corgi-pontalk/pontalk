@@ -50,13 +50,25 @@ def parse_markdown(file_path):
 
     # 本文を HTML に変換
     content_md = re.sub(r'^# .+\n', '', text, count=1).strip()
+    lines = content_md.split('\n')
+    content_ = ""
+    for line_ in lines:
+        if "^Categories: " in line_:
+            continue
+        elif "^Tags: " in line_:
+            continue
+        elif "## Excerpt " in line_:
+            break
+        else:
+            content_ += line_ + "\n"
+
     configs = {
         'codehilite':{
             'noclasses': True
         }
     }
     content_html = markdown.markdown(
-        content_md,
+        content_,
         extensions=['fenced_code', 'codehilite'],
         extension_configs=configs
     )
