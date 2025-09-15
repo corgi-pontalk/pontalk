@@ -86,10 +86,17 @@ def post_to_wordpress(file_path):
     tag_map = fetch_terms("tags")
 
     title, categories, tags, excerpt, content_html = parse_markdown(file_path)
+    modified_categories = []
+    for item in categories:
+        modified_categories.append(item.replace('&', '&amp;'))
+
+    modified_tags = []
+    for item in tags:
+        modified_tags.append(item.replace('&', '&amp;'))
 
     # 名前から ID に変換（なければ None を無視）
-    category_ids = [category_map.get(c) for c in categories if c in category_map]
-    tag_ids = [tag_map.get(t) for t in tags if t in tag_map]
+    category_ids = [category_map.get(c) for c in modified_categories if c in category_map]
+    tag_ids = [tag_map.get(t) for t in modified_tags if t in tag_map]
 
     data = {
         "title": title,
