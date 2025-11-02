@@ -3,3 +3,6 @@ Error: Invalid field: title,date,excerpt.
 /usr/share/nginx/html/wordpress/get_latest_excerpt.sh: 行 2: wp: コマンドが見つかりません
 xargs: wp: そのようなファイルやディレクトリはありません
 最新記事の要約が見つかりませんでした。
+Error: Error establishing a database connection.
+Error: Error establishing a database connection.
+最新記事の要約が見つかりませんでした。
